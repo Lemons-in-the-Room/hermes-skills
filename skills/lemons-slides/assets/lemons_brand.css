@@ -1,0 +1,303 @@
+/* ============================================================
+   LEMONS IN THE ROOM — BRAND-LOCKED DECK STYLESHEET
+   Updated from official Brandbook (December 2025).
+   Single source of truth for slide styling.
+   Edit deck CONTENT in HTML; never restyle here per-deck.
+   Render engine: Chromium (Playwright) — full modern CSS.
+
+   FONTS:
+   - Recoleta Alt (local TTF) — display / headlines
+   - Open Runde (Google Fonts) — body / UI
+   ============================================================ */
+
+/* ---- RECOLETA ALT — local, no network dependency for headlines ---- */
+@font-face { font-family:'Recoleta Alt'; src:url('RecoletaAlt-Thin.ttf') format('truetype'); font-weight:100; font-style:normal; }
+@font-face { font-family:'Recoleta Alt'; src:url('RecoletaAlt-Light.ttf') format('truetype'); font-weight:300; font-style:normal; }
+@font-face { font-family:'Recoleta Alt'; src:url('RecoletaAlt-Regular.ttf') format('truetype'); font-weight:400; font-style:normal; }
+@font-face { font-family:'Recoleta Alt'; src:url('RecoletaAlt-Medium.ttf') format('truetype'); font-weight:500; font-style:normal; }
+@font-face { font-family:'Recoleta Alt'; src:url('RecoletaAlt-SemiBold.ttf') format('truetype'); font-weight:600; font-style:normal; }
+@font-face { font-family:'Recoleta Alt'; src:url('RecoletaAlt-Bold.ttf') format('truetype'); font-weight:700; font-style:normal; }
+@font-face { font-family:'Recoleta Alt'; src:url('RecoletaAlt-Black.ttf') format('truetype'); font-weight:900; font-style:normal; }
+
+/* ---- DESIGN TOKENS — from Brandbook December 2025 ---- */
+:root {
+  /* Primary palette */
+  --orange:        #FF8731;
+  --purple:        #8756FA;
+  --black:         #03091B;
+
+  /* Secondary palette */
+  --purple-light:  #B385FF;
+  --orange-light:  #FF9E54;
+  --bg-orange:     #FFF5EE;
+  --bg-purple:     #F8F6FF;
+
+  /* Functional */
+  --bg:            #FFF5EE;   /* default slide background */
+  --card:          #FFFFFF;
+  --card-soft:     #FFF9F5;
+  --ink:           #03091B;
+  --ink-soft:      #4A4560;
+  --meta:          #A89F92;
+  --line:          #EDE5DA;
+  --tint-orange:   #FFF0E4;
+  --tint-purple:   #F0EAFF;
+
+  --W: 1280px;
+  --H: 720px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { margin: 0; padding: 0; background: #fff; }
+body {
+  font-family: 'Open Runde', 'Recoleta Alt', sans-serif;
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
+
+/* ============================================================
+   SLIDE FRAME
+   ============================================================ */
+.slide {
+  width: var(--W); height: var(--H);
+  position: relative; overflow: hidden;
+  background: var(--bg);
+  page-break-after: always; break-after: page;
+}
+.slide:last-child { page-break-after: auto; }
+.pad {
+  position: absolute; inset: 0;
+  padding: 60px 68px 52px;
+  display: flex; flex-direction: column;
+}
+
+/* ---- LOGO ---- */
+.logo-tr { position: absolute; top: 30px; right: 44px; height: 54px; width: auto; z-index: 5; }
+.logo-tr.white { filter: brightness(0) invert(1); }
+
+/* ============================================================
+   TYPE SCALE
+   Recoleta Alt → display / headlines (warm, rounded serif)
+   Open Runde   → body / UI / labels (clean, rounded sans)
+   ============================================================ */
+.eyebrow {
+  font-family: 'Open Runde', sans-serif; font-weight: 700;
+  font-size: 15px; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--orange); margin-bottom: 14px;
+}
+.eyebrow.purple { color: var(--purple); }
+.eyebrow.navy   { color: var(--black); }
+
+/* Cover headline */
+.h1 {
+  font-family: 'Recoleta Alt', serif; font-weight: 700;
+  font-size: 64px; line-height: 1.02; letter-spacing: -.01em;
+  color: var(--black);
+}
+.h1 .or { color: var(--orange); }
+.h1 .pu { color: var(--purple); }
+
+/* Content slide title */
+.title {
+  font-family: 'Recoleta Alt', serif; font-weight: 700;
+  font-size: 52px; line-height: 1.06; letter-spacing: -.008em;
+  color: var(--black); margin-bottom: 8px;
+}
+.title .or { color: var(--orange); }
+.title .pu { color: var(--purple); }
+
+.subtitle {
+  font-family: 'Open Runde', sans-serif; font-weight: 400;
+  font-size: 24px; color: var(--ink-soft); line-height: 1.45;
+}
+
+.head { flex: 0 0 auto; margin-bottom: 30px; }
+
+.body { font-family: 'Open Runde', sans-serif; font-size: 21px; line-height: 1.55; color: var(--ink-soft); }
+.lead { font-family: 'Open Runde', sans-serif; font-size: 25px; line-height: 1.45; color: var(--ink); font-weight: 600; }
+
+/* ============================================================
+   LAYOUT HELPERS
+   ============================================================ */
+.fill { flex: 1 1 auto; display: flex; flex-direction: column; min-height: 0; }
+.grid { display: grid; gap: 20px; flex: 1 1 auto; min-height: 0; }
+.grid.g2 { grid-template-columns: repeat(2, 1fr); }
+.grid.g3 { grid-template-columns: repeat(3, 1fr); }
+.grid.g4 { grid-template-columns: repeat(4, 1fr); }
+.row { display: flex; gap: 20px; flex: 1 1 auto; min-height: 0; }
+
+/* ============================================================
+   CARD
+   ============================================================ */
+.card {
+  background: var(--card); border-radius: 22px;
+  padding: 26px 28px; border: 1px solid var(--line);
+  display: flex; flex-direction: column; min-height: 0;
+}
+.card.center  { justify-content: center; text-align: center; align-items: center; }
+.card.vc      { justify-content: center; }
+.card.between { justify-content: space-between; }
+.card.soft    { background: var(--card-soft); }
+.card.purple  { background: var(--tint-purple); border-color: var(--purple-light); }
+.card.orange  { background: var(--tint-orange); border-color: var(--orange-light); }
+.card.outline { background: transparent; border: 1.5px solid var(--orange); }
+.card.dark    { background: var(--black); border-color: var(--black); }
+.card.dark .card-title,
+.card.dark .lead,
+.card.dark .body { color: #fff; }
+
+.card-label {
+  font-family: 'Open Runde', sans-serif; font-weight: 700; font-size: 13px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--meta); margin-bottom: 12px;
+}
+.card-title {
+  font-family: 'Recoleta Alt', serif; font-weight: 700; font-size: 28px;
+  color: var(--black); margin-bottom: 10px; line-height: 1.15;
+}
+.card-title.or { color: var(--orange); }
+.card-title.pu { color: var(--purple); }
+
+/* ---- BIG STAT ---- */
+.stat {
+  font-family: 'Recoleta Alt', serif; font-weight: 700;
+  font-size: 88px; line-height: .95; letter-spacing: -.02em;
+  color: var(--orange);
+}
+.stat.purple { color: var(--purple); }
+.stat-label { font-family: 'Open Runde', sans-serif; font-size: 20px; color: var(--ink-soft); margin-top: 12px; font-weight: 500; }
+
+/* ---- CHIP (purple tint — NO bullet lists) ---- */
+.chips { display: flex; flex-wrap: wrap; gap: 9px; }
+.chip {
+  background: var(--tint-purple); color: var(--purple);
+  font-family: 'Open Runde', sans-serif; font-weight: 600; font-size: 16px;
+  padding: 9px 16px; border-radius: 12px;
+}
+.chip.orange { background: var(--tint-orange); color: var(--orange); }
+
+/* ---- PILL / TAG (orange tint) ---- */
+.pills { display: flex; flex-wrap: wrap; gap: 10px; }
+.pill {
+  background: var(--tint-orange); color: var(--orange);
+  font-family: 'Open Runde', sans-serif; font-weight: 700; font-size: 15px;
+  padding: 10px 18px; border-radius: 999px;
+}
+.pill.purple { background: var(--tint-purple); color: var(--purple); }
+
+/* ---- HIGHLIGHT BOX ---- */
+.hbox {
+  flex: 0 0 auto; margin-top: 22px;
+  background: var(--tint-orange); border-radius: 18px; padding: 22px 28px;
+}
+.hbox.purple { background: var(--tint-purple); }
+.hbox .hl {
+  font-family: 'Open Runde', sans-serif; font-weight: 700; color: var(--orange);
+  font-size: 13px; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 7px;
+}
+.hbox.purple .hl { color: var(--purple); }
+.hbox .hb { font-family: 'Open Runde', sans-serif; font-size: 20px; color: var(--ink); line-height: 1.4; }
+
+/* ---- INFOBOX ---- */
+.infobox {
+  background: #fff; border: 1px solid var(--line);
+  border-radius: 16px; padding: 18px 28px;
+}
+.infobox .k { font-family: 'Open Runde', sans-serif; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--meta); font-weight: 700; margin-bottom: 5px; }
+.infobox .v { font-family: 'Recoleta Alt', serif; font-size: 22px; color: var(--black); font-weight: 700; }
+
+/* ============================================================
+   COVER — warm BG, Recoleta Alt headline
+   ============================================================ */
+.cover {
+  background:
+    radial-gradient(90% 80% at 100% 0%, #FFE5CC 0%, rgba(255,229,204,0) 55%),
+    radial-gradient(80% 80% at 0% 100%, #FFEEDD 0%, rgba(255,238,221,0) 60%),
+    var(--bg);
+}
+/* COVER HARDENING: always warm background + dark text, never broken contrast */
+.cover .logo-tr, .cover .logo-tr.white { filter: none !important; }
+.cover .pad, .cover { color: var(--black) !important; }
+.cover .eyebrow { color: var(--orange) !important; }
+.cover .h1, .cover h1, .cover .title { color: var(--black) !important; }
+.cover .h1 .or, .cover .title .or { color: var(--orange) !important; }
+.cover .h1 .pu, .cover .title .pu { color: var(--purple) !important; }
+.cover .subtitle { color: var(--ink-soft) !important; }
+.cover .cover-foot { color: var(--meta) !important; }
+.cover * { text-shadow: none !important; }
+
+.cover-foot {
+  position: absolute; left: 68px; bottom: 40px;
+  font-family: 'Open Runde', sans-serif; font-size: 14px;
+  color: var(--meta); letter-spacing: .03em;
+}
+
+/* ============================================================
+   CLOSING — split warm orange / white
+   ============================================================ */
+.closing { display: flex; width: var(--W); height: var(--H); overflow: hidden; }
+.closing .left {
+  flex: 0 0 50%; position: relative;
+  background: linear-gradient(160deg, #FFD9B0 0%, #FFC080 100%);
+  padding: 70px 60px; display: flex; flex-direction: column; justify-content: flex-start;
+}
+.closing .left .role {
+  font-family: 'Open Runde', sans-serif; font-weight: 700; font-size: 22px;
+  letter-spacing: .05em; text-transform: uppercase; color: var(--black); opacity: .7;
+}
+.closing .left .name {
+  font-family: 'Recoleta Alt', serif; font-weight: 700; font-size: 66px;
+  line-height: .98; letter-spacing: -.01em; color: var(--black); margin-top: 10px;
+}
+.closing .right {
+  flex: 1; background: #fff; padding: 70px 60px;
+  display: flex; flex-direction: column;
+}
+.closing .right .brand { display: flex; align-items: center; gap: 16px; margin-bottom: auto; }
+.closing .right .brand img { height: 60px; width: auto; }
+.contact { display: flex; flex-direction: column; gap: 14px; margin: 30px 0; }
+.contact .c {
+  display: flex; align-items: center; gap: 16px;
+  background: var(--tint-orange); border-radius: 14px; padding: 16px 24px;
+}
+.contact .c .ico {
+  width: 34px; height: 34px; border-radius: 50%; background: var(--orange);
+  color: #fff; display: flex; align-items: center; justify-content: center;
+  font-size: 16px; flex: 0 0 auto;
+}
+.contact .c .t { font-family: 'Open Runde', sans-serif; font-size: 19px; color: var(--black); font-weight: 600; }
+.closing .quote {
+  font-family: 'Recoleta Alt', serif; font-style: italic; font-weight: 400;
+  font-size: 22px; color: var(--ink-soft); text-align: right; margin-top: auto; line-height: 1.4;
+}
+
+/* ============================================================
+   ORG CHART — horizontal
+   ============================================================ */
+.org { flex: 1 1 auto; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0; }
+.org-tier { display: flex; gap: 24px; justify-content: center; position: relative; }
+.org-gap { height: 40px; width: 2px; background: var(--line); }
+.org-node {
+  background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+  padding: 18px 30px; text-align: center; min-width: 160px;
+}
+.org-node.lead { background: linear-gradient(135deg, var(--orange), var(--purple)); border: none; }
+.org-node.lead .n, .org-node.lead .r { color: #fff; }
+.org-node .n { font-family: 'Recoleta Alt', serif; font-weight: 700; font-size: 22px; color: var(--black); }
+.org-node .r { font-family: 'Open Runde', sans-serif; font-size: 15px; color: var(--orange); font-weight: 600; margin-top: 3px; }
+.org-rail { height: 2px; background: var(--line); position: absolute; }
+
+/* ============================================================
+   ORG CHART — vertical
+   ============================================================ */
+.orgv { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: center; gap: 12px; position: relative; max-width: 760px; margin: 0 auto; width: 100%; }
+.orgv::before { content: ""; position: absolute; left: 8px; top: 18px; bottom: 18px; width: 2px; background: var(--line); }
+.orgv-row { display: flex; align-items: center; gap: 22px; position: relative; z-index: 1; }
+.orgv-dot { width: 16px; height: 16px; border-radius: 50%; background: var(--orange); border: 3px solid var(--bg); flex: 0 0 auto; margin-left: 1px; }
+.orgv-row.lead .orgv-dot { width: 18px; height: 18px; background: var(--purple); }
+.orgv-card { flex: 1; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 13px 24px; display: flex; align-items: baseline; gap: 14px; }
+.orgv-row.lead .orgv-card { background: linear-gradient(135deg, var(--orange), var(--purple)); border: none; }
+.orgv-card .n { font-family: 'Recoleta Alt', serif; font-weight: 700; font-size: 21px; color: var(--black); }
+.orgv-card .r { font-family: 'Open Runde', sans-serif; font-size: 14px; color: var(--orange); font-weight: 600; }
+.orgv-row.lead .orgv-card .n { color: #fff; }
+.orgv-row.lead .orgv-card .r { color: rgba(255,255,255,.9); }
